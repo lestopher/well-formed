@@ -1,0 +1,37 @@
+h1
+  | Create a Form
+
+= nested_form_for @form do |form|
+  = form.label :title
+  = form.text_field :title
+  br
+  h2
+    | Form Objects
+  .row
+    .span12#formObjectsContainer
+      = form.fields_for :form_objects do |form_object|
+        .row.formProperties
+          .span6.formObjectType
+            = form_object.label :title
+            = form_object.text_field :title, :class => "input-xlarge formObjectTypeTitle"
+            br
+            = form_object.label "Form Object Type"
+            = form_object.select :form_type, options_for_select([\
+                ['', 0], \
+                ['Checkbox', 1], \
+                ['Dropdown', 2] \
+              ]), {}, { :class => "formTypeSelect" }
+
+          .span6.formObjectTypeOptions
+        .row.formPreview.well
+          h2
+            em
+              | Preview
+          h3.formObjectTitle
+          .formDetails.span12
+  p
+    = form.link_to_add "<i class='icon-plus'></i> Add a form object".html_safe, :form_objects, { :data => { :target => "#formObjectsContainer" }, :class => "btn" }
+
+  = form.button
+
+  = render 'form_templates'

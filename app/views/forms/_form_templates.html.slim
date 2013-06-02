@@ -1,0 +1,29 @@
+#form-object-templates
+  #checkbox-template
+    label.checkbox
+      input(type="checkbox" value="")
+      | Example
+  #select-template
+    select
+
+#form-object-options-templates
+  #checkbox-options-template
+    .numberOfCB
+      label
+        | How many checkboxes?
+      input.input-mini.cbAmt(type="number")
+    .cbLayout
+      label
+        | Checkbox Layout
+      label.radio
+        input.cbLayoutOptions(type="radio" name="cbLayout" value="stacked" checked)
+        | Stacked
+      label.radio
+        input.cbLayoutOptions(type="radio" name="cbLayout" value="inline")
+        | Inline
+
+  #select-options-template
+    label.checkbox.allowMultipleSelection
+      input(type="checkbox")
+      | Allow multiple
+    textarea.dropdown-selections

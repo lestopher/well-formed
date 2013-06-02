@@ -6,6 +6,7 @@ class FormsController < ApplicationController
   end
 
   def new
+    @form = Form.new
   end
 
   def create

@@ -15,14 +15,15 @@ ActiveRecord::Schema.define(:version => 20130601212543) do
 
   create_table "form_objects", :force => true do |t|
     t.string   "title"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "form_type"
+    t.string   "validations"
+    t.integer  "form_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "forms", :force => true do |t|
     t.string   "title"
-    t.string   "form_type"
-    t.integer  "form_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
