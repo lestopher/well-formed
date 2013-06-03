@@ -2,6 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(document).ready ->
+  $modalGlobal = $('#modalGlobal')
   $checkboxOptionsTemplate = $('#form-object-options-templates #checkbox-options-template')
   $checkboxTemplate =  $('#form-object-templates #checkbox-template')
   $dropdownOptionsTemplate = $('#form-object-options-templates #select-options-template')
@@ -17,6 +18,7 @@ $(document).ready ->
 
     if $evTarget.val() == "1"
       $formObjectTypeOptions.html $checkboxOptionsTemplate.html()
+      $formPreview.find('.formDetails').html $checkboxTemplate.html()
     else if $evTarget.val() == "2"
       $formObjectTypeOptions.html $dropdownOptionsTemplate.html()
       $formPreview.find('.formDetails').html $dropdownTemplate.html()
@@ -84,4 +86,21 @@ $(document).ready ->
     $formDropdown.html selectionsHTML
 
 
+  $('#preview-btn').on 'click', (ev) ->
+    ev.preventDefault()
+    $modalGlobal.find('.modal-header h2 .modal-title').text($('#form_title').val())
+    $modalBody = $modalGlobal.find '.modal-body'
+    $formPreviews = $('.formPreview').clone()
+    formPreviewsLength = $formPreviews.length    
+    i = 0
 
+    while i < formPreviewsLength
+      $modalBody.append($formPreviews.eq(i).html())
+      ++i
+
+    $modalGlobal.modal('toggle')
+    .css({
+      width: 'auto',
+      'margin-left': ->
+        return -($(this).width() / 2)
+    })

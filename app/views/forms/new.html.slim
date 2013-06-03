@@ -27,11 +27,14 @@ h1
           h2
             em
               | Preview
-          h3.formObjectTitle
           .formDetails.span12
+            h3.formObjectTitle
   p
     = form.link_to_add "<i class='icon-plus'></i> Add a form object".html_safe, :form_objects, { :data => { :target => "#formObjectsContainer" }, :class => "btn" }
 
-  = form.button
+  = form.button :class => "btn btn-primary"
+  |   
+  a.btn.btn-info#preview-btn
+    | Preview
 
   = render 'form_templates'
