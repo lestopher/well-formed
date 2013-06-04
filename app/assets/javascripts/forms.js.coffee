@@ -3,29 +3,43 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(document).ready ->
   $modalGlobal = $('#modalGlobal')
-  $checkboxOptionsTemplate = $('#form-object-options-templates #checkbox-options-template')
-  $checkboxTemplate =  $('#form-object-templates #checkbox-template')
-  $dropdownOptionsTemplate = $('#form-object-options-templates #select-options-template')
-  $dropdownTemplate = $('#form-object-templates #select-template')
+  $checkboxOptionsTemplate = $('#form-object-options-templates #checkbox-options-template').clone()
+  $checkboxTemplate =  $('#form-object-templates #checkbox-template').clone()
+  $dropdownOptionsTemplate = $('#form-object-options-templates #select-options-template').clone()
+  $dropdownTemplate = $('#form-object-templates #select-template').clone()
+  $formPreview = $('#formPreview')
+
+  idHash = { "_length": 0 }
+
+  addFormObjId = (foid) ->
+   idHash[foid] = "fo_" + idHash._length
+   idHash._length += 1
 
   $('#formObjectsContainer').on 'change', '.formTypeSelect', (ev) ->
     $evTarget = $(this)
-    $formObjectTypeOptions = $evTarget.parent().siblings('.formObjectTypeOptions')
-    $formPreview = $evTarget.parents('.formProperties').siblings('.formPreview')
-
-    if $formPreview.is(':hidden')
-      $formPreview.show()
+    formObjectId = $evTarget.prop 'id'
+    $formObjectTypeOptions = $evTarget.parent().siblings '.formObjectTypeOptions'
 
     if $evTarget.val() == "1"
       $formObjectTypeOptions.html $checkboxOptionsTemplate.html()
-      $formPreview.find('.formDetails').html $checkboxTemplate.html()
+
+      if idHash[formObjectId] != undefined && idHash[formObjectId] != null
+        $formPreview.find('#' + idHash[formObjectId]).html $checkboxTemplate.children()
+      else
+        addFormObjId formObjectId
+        $formPreview.find('.formDetails').html $checkboxTemplate.clone().prop 'id', idHash[formObjectId]
+
     else if $evTarget.val() == "2"
       $formObjectTypeOptions.html $dropdownOptionsTemplate.html()
-      $formPreview.find('.formDetails').html $dropdownTemplate.html()
 
+      if idHash[formObjectId] != undefined && idHash[formObjectId] != null
+        $formPreview.find('#' + idHash[formObjectId]).html $dropdownTemplate.children()
+      else
+        addFormObjId formObjectId
+        $formPreview.find('.formDetails').html $dropdownTemplate.clone().prop 'id', idHash[formObjectId]
 
   .on 'keyup', '.cbAmt', (ev) ->
-    $formDetails = $(this).parents('.formProperties').siblings('.formPreview').children('.formDetails')
+    $formDetails = $formPreview.children('.formDetails')
     $formDetailsCB = $formDetails.find('.checkbox')
     currentNumOfCB = $formDetailsCB.length
     numOfCB = parseInt($(this).val())
@@ -43,16 +57,11 @@ $(document).ready ->
 
   .on 'keyup', '.formObjectTypeTitle', (ev) ->
     $evTarget = $(this)
-    $el = $evTarget.parents('.formProperties').siblings('.formPreview')
-
-    if $el.is(':hidden')
-      $el.show()
-
-    $el.find('.formObjectTitle').text($evTarget.val())
+    $formPreview.find('.formObjectTitle').text($evTarget.val())
 
   .on 'click', '.cbLayoutOptions', (ev) ->
     $evTarget = $(this)
-    $formDetails = $evTarget.parents('.formProperties').siblings('.formPreview').children('.formDetails')
+    $formDetails = $formPreview.children('.formDetails')
     $formDetailsCB = $formDetails.find('.checkbox')
     i = 0
 
@@ -76,7 +85,7 @@ $(document).ready ->
     $evTarget = $(this)
     selectionsArr = $evTarget.val().split('\n')
     selectionsHTML = []
-    $formDropdown = $evTarget.parents('.formProperties').siblings('.formPreview').find('select')
+    $formDropdown = $formPreview.find('select')
     i = 0
 
     while i < selectionsArr.length
@@ -84,6 +93,10 @@ $(document).ready ->
       ++i
 
     $formDropdown.html selectionsHTML
+
+  .on 'keyup', '#formTitle', (ev) ->
+    $evTarget = $(this)
+    $formPreview.find('#formPreviewTitle').text($evTarget.val())
 
 
   $('#preview-btn').on 'click', (ev) ->
