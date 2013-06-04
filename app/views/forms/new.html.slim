@@ -32,6 +32,6 @@ h1
   p
     = form.link_to_add "<i class='icon-plus'></i> Add a form object".html_safe, :form_objects, { :data => { :target => "#formObjectsContainer" }, :class => "btn" }
 
-  = form.button
+  = form.submit :class => "btn btn-primary"
 
   = render 'form_templates'
